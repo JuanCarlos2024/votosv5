@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Modal, A
 import { DataContext } from 'context/DataContext';
 import { AuthContext } from 'context/AuthContext';
 import { useRouter } from 'expo-router';
-import { CirclePlus, CreditCard as Edit, Circle as XCircle, Eye, Check, TriangleAlert } from 'lucide-react-native';
+import { CirclePlus, Pencil as Edit, X as XCircle, Eye, Check, TriangleAlert } from 'lucide-react-native';
 import { exportToCSV, exportToPDF } from 'utils/exportUtils';
 
 export default function AdminScreen() {

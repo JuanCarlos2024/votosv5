@@ -14,6 +14,7 @@ type Question = {
   id_pregunta: string;
   texto_pregunta: string;
   estado: 'activa' | 'cerrada' | 'unanimidad';
+  fecha_creacion?: string;
   fecha_cierre?: string;
   votos: Voto[];
 };

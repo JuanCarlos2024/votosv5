@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { useContext } from 'react';
-import { ClipboardList, Chrome as Home, UserCog, CircleUser as UserCircle, Users } from 'lucide-react-native';
+import { ClipboardList, Home, UserCog, CircleUser as UserCircle, Users } from 'lucide-react-native';
 import { AuthContext } from 'context/AuthContext';
 
 export default function TabLayout() {
