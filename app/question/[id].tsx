@@ -8,7 +8,7 @@ import { ArrowLeft, ThumbsUp, ThumbsDown, TriangleAlert as AlertTriangle } from 
 export default function QuestionScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { user } = useContext(AuthContext);
+  const { user, updateUserVotes } = useContext(AuthContext);
   const { getQuestionById, voteOnQuestion } = useContext(DataContext);
   
   const [question, setQuestion] = useState<any>(null);
@@ -53,10 +53,12 @@ export default function QuestionScreen() {
             try {
               await voteOnQuestion(id, {
                 id_usuario: user?.id_usuario,
+                nombre_usuario: user?.nombre_usuario,
                 opcion: selectedOption,
                 cantidad_votos: user?.votos_disponibles || 0,
                 timestamp: new Date().toISOString(),
               });
+              updateUserVotes(0);
               
               Alert.alert(
                 'Voto Registrado',

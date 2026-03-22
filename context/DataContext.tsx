@@ -2,7 +2,46 @@ import React, { createContext, useState } from 'react';
 import uuid from 'react-native-uuid';
 import usuarios from 'data/usuarios';
 
-export const DataContext = createContext({});
+type Voto = {
+  id_usuario?: string;
+  nombre_usuario?: string;
+  opcion: string;
+  cantidad_votos: number;
+  timestamp: string;
+};
+
+type Question = {
+  id_pregunta: string;
+  texto_pregunta: string;
+  estado: 'activa' | 'cerrada' | 'unanimidad';
+  fecha_cierre?: string;
+  votos: Voto[];
+};
+
+type UserData = {
+  id_usuario: string;
+  nombre_usuario: string;
+  contraseña: string;
+  votos_disponibles: number;
+};
+
+type DataContextType = {
+  questions: Question[];
+  loadQuestions: () => Promise<void>;
+  addQuestion: (question: Omit<Question, 'id_pregunta' | 'votos'>) => Promise<void>;
+  updateQuestion: (updated: Question) => Promise<void>;
+  deleteQuestion: (id: string) => Promise<void>;
+  approveByUnanimity: (id: string) => Promise<void>;
+  voteOnQuestion: (id_pregunta: string, voteData: Voto) => Promise<void>;
+  getQuestionById: (id: string) => Promise<Question | undefined>;
+  getLastClosedQuestion: () => Question | undefined;
+  users: UserData[];
+  addUser: (userData: UserData) => Promise<void>;
+  updateUser: (userData: UserData) => Promise<void>;
+  deleteUser: (id: string) => Promise<void>;
+};
+
+export const DataContext = createContext<DataContextType>({} as DataContextType);
 
 export const DataProvider = ({ children }) => {
   const [questions, setQuestions] = useState([]);
@@ -83,7 +122,7 @@ export const DataProvider = ({ children }) => {
   const getLastClosedQuestion = () => {
     return questions
       .filter(q => q.estado === 'cerrada' || q.estado === 'unanimidad')
-      .sort((a, b) => new Date(b.fecha_cierre) - new Date(a.fecha_cierre))[0];
+      .sort((a, b) => new Date(b.fecha_cierre ?? 0).getTime() - new Date(a.fecha_cierre ?? 0).getTime())[0];
   };
 
   // User management functions

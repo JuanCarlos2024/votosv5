@@ -7,7 +7,6 @@ import { SplashScreen } from 'expo-router';
 import { useFrameworkReady } from 'hooks/useFrameworkReady';
 import { AuthProvider } from 'context/AuthContext';
 import { DataProvider } from 'context/DataContext';
-import { AuthContext } from '@/context/AuthContext';
 
 
 // Prevent splash screen from auto-hiding
