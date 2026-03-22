@@ -45,29 +45,27 @@ export default function TabLayout() {
         }}
       />
       
-      {user?.rol === 'administrador' && (
-        <>
-          <Tabs.Screen
-            name="admin"
-            options={{
-              title: 'Admin',
-              tabBarIcon: ({ color, size }) => (
-                <UserCog size={size} color={color} />
-              ),
-            }}
-          />
-          
-          <Tabs.Screen
-            name="users"
-            options={{
-              title: 'Usuarios',
-              tabBarIcon: ({ color, size }) => (
-                <Users size={size} color={color} />
-              ),
-            }}
-          />
-        </>
-      )}
+      <Tabs.Screen
+        name="admin"
+        options={{
+          title: 'Admin',
+          href: user?.rol === 'administrador' ? undefined : null,
+          tabBarIcon: ({ color, size }) => (
+            <UserCog size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="users"
+        options={{
+          title: 'Usuarios',
+          href: user?.rol === 'administrador' ? undefined : null,
+          tabBarIcon: ({ color, size }) => (
+            <Users size={size} color={color} />
+          ),
+        }}
+      />
       
       <Tabs.Screen
         name="profile"
