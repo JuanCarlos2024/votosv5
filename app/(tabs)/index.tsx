@@ -4,7 +4,8 @@ import { AuthContext } from 'context/AuthContext';
 import { DataContext } from 'context/DataContext';
 import { useRouter } from 'expo-router';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory-native';
+import { BarChart } from 'react-native-chart-kit';
+import { Dimensions } from 'react-native';
 
 export default function HomeScreen() {
   const { user } = useContext(AuthContext);
@@ -47,12 +48,6 @@ export default function HomeScreen() {
 
   const votes = lastClosedQuestion ? calculateVotes(lastClosedQuestion) : { approve: 0, reject: 0, abstain: 0, total: 0 };
   
-  const chartData = [
-    { option: 'Apruebo', votes: votes.approve, color: '#10b981' },
-    { option: 'Rechazo', votes: votes.reject, color: '#ef4444' },
-    { option: 'Abstención', votes: votes.abstain, color: '#64748b' }
-  ];
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -68,35 +63,27 @@ export default function HomeScreen() {
               <Text style={styles.questionText}>{lastClosedQuestion.texto_pregunta}</Text>
               
               <View style={styles.chartContainer}>
-                <VictoryChart
-                  theme={VictoryTheme.material}
-                  domainPadding={30}
-                  height={250}
-                >
-                  <VictoryAxis
-                    tickFormat={(t) => `${t}`}
-                    style={{
-                      tickLabels: { fontSize: 12, padding: 5 }
-                    }}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    tickFormat={(t) => `${t}`}
-                    style={{
-                      tickLabels: { fontSize: 12, padding: 5 }
-                    }}
-                  />
-                  <VictoryBar
-                    data={chartData}
-                    x="option"
-                    y="votes"
-                    style={{
-                      data: {
-                        fill: ({ datum }) => datum.color
-                      }
-                    }}
-                  />
-                </VictoryChart>
+                <BarChart
+                  data={{
+                    labels: ['Apruebo', 'Rechazo', 'Abstención'],
+                    datasets: [{ data: [votes.approve, votes.reject, votes.abstain] }],
+                  }}
+                  width={Dimensions.get('window').width - 72}
+                  height={220}
+                  yAxisLabel=""
+                  yAxisSuffix=""
+                  chartConfig={{
+                    backgroundColor: '#ffffff',
+                    backgroundGradientFrom: '#ffffff',
+                    backgroundGradientTo: '#ffffff',
+                    decimalPlaces: 0,
+                    color: (opacity = 1) => `rgba(37, 99, 235, ${opacity})`,
+                    labelColor: (opacity = 1) => `rgba(71, 85, 105, ${opacity})`,
+                    style: { borderRadius: 8 },
+                  }}
+                  style={{ borderRadius: 8 }}
+                  showValuesOnTopOfBars
+                />
               </View>
 
               <View style={styles.statsContainer}>
