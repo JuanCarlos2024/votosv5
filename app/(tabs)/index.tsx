@@ -4,8 +4,6 @@ import { AuthContext } from 'context/AuthContext';
 import { DataContext } from 'context/DataContext';
 import { useRouter } from 'expo-router';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { BarChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
 
 export default function HomeScreen() {
   const { user } = useContext(AuthContext);
@@ -63,27 +61,22 @@ export default function HomeScreen() {
               <Text style={styles.questionText}>{lastClosedQuestion.texto_pregunta}</Text>
               
               <View style={styles.chartContainer}>
-                <BarChart
-                  data={{
-                    labels: ['Apruebo', 'Rechazo', 'Abstención'],
-                    datasets: [{ data: [votes.approve, votes.reject, votes.abstain] }],
-                  }}
-                  width={Dimensions.get('window').width - 72}
-                  height={220}
-                  yAxisLabel=""
-                  yAxisSuffix=""
-                  chartConfig={{
-                    backgroundColor: '#ffffff',
-                    backgroundGradientFrom: '#ffffff',
-                    backgroundGradientTo: '#ffffff',
-                    decimalPlaces: 0,
-                    color: (opacity = 1) => `rgba(37, 99, 235, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(71, 85, 105, ${opacity})`,
-                    style: { borderRadius: 8 },
-                  }}
-                  style={{ borderRadius: 8 }}
-                  showValuesOnTopOfBars
-                />
+                {[
+                  { label: 'Apruebo', value: votes.approve, color: '#10b981' },
+                  { label: 'Rechazo', value: votes.reject, color: '#ef4444' },
+                  { label: 'Abstención', value: votes.abstain, color: '#64748b' },
+                ].map((item) => (
+                  <View key={item.label} style={styles.barRow}>
+                    <Text style={styles.barLabel}>{item.label}</Text>
+                    <View style={styles.barTrack}>
+                      <View style={[styles.barFill, {
+                        width: votes.total > 0 ? `${Math.round((item.value / votes.total) * 100)}%` : '0%',
+                        backgroundColor: item.color,
+                      }]} />
+                    </View>
+                    <Text style={styles.barValue}>{item.value}</Text>
+                  </View>
+                ))}
               </View>
 
               <View style={styles.statsContainer}>
@@ -351,5 +344,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#64748b',
     textAlign: 'center',
+  },
+  barRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  barLabel: {
+    fontFamily: 'Inter-Medium',
+    fontSize: 13,
+    color: '#475569',
+    width: 80,
+  },
+  barTrack: {
+    flex: 1,
+    height: 20,
+    backgroundColor: '#e2e8f0',
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginHorizontal: 8,
+  },
+  barFill: {
+    height: '100%',
+    borderRadius: 10,
+    minWidth: 4,
+  },
+  barValue: {
+    fontFamily: 'Inter-Bold',
+    fontSize: 14,
+    color: '#334155',
+    width: 30,
+    textAlign: 'right',
   },
 });
