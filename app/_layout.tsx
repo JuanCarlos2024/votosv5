@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
-import { SplashScreen } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { useFrameworkReady } from 'hooks/useFrameworkReady';
 import { AuthProvider } from 'context/AuthContext';
 import { DataProvider } from 'context/DataContext';
